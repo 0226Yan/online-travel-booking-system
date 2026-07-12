@@ -1,6 +1,6 @@
 <template>
   <div style="position: relative;">
-    <img src="/login_background.jpg" style="position: absolute; top: 0; left: 0;
+    <img :src="publicPath + 'login_background.jpg'" style="position: absolute; top: 0; left: 0;
     width: 100%; height: 100%; filter: blur(5px); opacity: 0.97;" alt="Background Image">
       <div style="padding: 300px;display: flex; justify-content: center;
       align-items: center; height: 100vh; overflow: hidden;">
@@ -9,7 +9,7 @@
       <el-aside style="flex: 1.3; height: 500px; display: flex; flex-direction: column;
       justify-content: center; align-items: center; position: relative;
       border-top-left-radius: 10px; border-bottom-left-radius: 10px;">
-        <img src="/login.jpg" style="width: 100%; height: 100%; object-fit: cover;" alt="Login Image">
+        <img :src="publicPath + 'login.jpg'" style="width: 100%; height: 100%; object-fit: cover;" alt="Login Image">
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
         text-align: center; color: #fff; font-size: 45px; opacity: 0.8; letter-spacing: 5px;">
           WELCOME
@@ -40,7 +40,7 @@
                 <el-radio label="女">女</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-link type="info" href="/login" target="_blank" class="login-link">已有账号，去登陆</el-link>
+            <el-link type="info" class="login-link" @click="goToLogin">已有账号，去登录</el-link>
             <el-form-item>
               <el-button round class="login_button" style="width: 80%; margin-top: 10px" @click="register()">
                 注 册
@@ -61,13 +61,22 @@ export default {
   name: "RegisterView",
   data() {
     return {
-      user: {},
+      publicPath: process.env.BASE_URL,
+      user: {
+        username: '',
+        password: '',
+        gender: '女'
+      },
       confirmPassword: ''
     };
   },
   created() {
   },
   methods: {
+    goToLogin() {
+      this.$router.push("/login");
+    },
+
     register() {
       // 验证密码和确认密码是否匹配
       if (this.user.password !== this.confirmPassword) {

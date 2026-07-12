@@ -4,8 +4,7 @@
                     font-style: italic; top:400px; left: 1000px; z-index:2; letter-spacing: 5px;">探索新旅途</div>
     <div style="height: 600px; position: relative;">
       <div style="display: flex; justify-content: center;">
-        <img src="/1.jpg" alt="Background Image"
-             style="position: relative; width: 90%; height: 580px; border-radius: 50px; z-index:1;">
+        <img :src="publicPath + '1.jpg'" alt="Background Image" style="position: relative; width: 90%; height: 580px; border-radius: 50px; z-index:1;">
       </div>
     </div>
 
@@ -112,9 +111,10 @@ export default {
   name: "Home",
   data() {
     return {
+      publicPath: process.env.BASE_URL,
       hotelData: [],
       spotData: [],
-      routeData:[],
+      routeData: [],
       isSpecialOffer: false,
     }
   },
@@ -163,13 +163,22 @@ export default {
       })
     },
     navToHotel(hotelId) {
-      location.href = '/travel/hotel?hotelId=' + hotelId
+      this.$router.push({
+        path: "/travel/hotel",
+        query: { hotelId }
+      });
     },
     navToSpot(spotId) {
-      location.href = '/travel/spot?spotId=' + spotId
+      this.$router.push({
+        path: "/travel/spot",
+        query: { spotId }
+      });
     },
     navToRoute(tourId) {
-      location.href = '/travel/route?tourId=' + tourId
+      this.$router.push({
+        path: "/travel/route",
+        query: { tourId }
+      });
     },
     moreHotel() {
       this.$router.push("/travel/hotelReserve");
