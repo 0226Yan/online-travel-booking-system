@@ -58,7 +58,7 @@ export default {
   //methods:本页面所有的点击事件或者其他函数定义区
   methods: {
     loadHotels() {
-      request.get("hotelInfo/selectById?hotelId=" + this.hotelId).then(res => {
+      request.get("/hotelInfo/selectById?hotelId=" + this.hotelId).then(res => {
         if(res.code === '0') {
           this.hotelData = res.data;
         } else {
@@ -67,7 +67,7 @@ export default {
       })
     },
     loadRooms() {
-      request.get("roomInfo/selectByHotelId?hotelId=" + this.hotelId).then(res => {
+      request.get("/roomInfo/selectByHotelId?hotelId=" + this.hotelId).then(res => {
         if(res.code === '0') {
           this.roomData = res.data;
         } else {
@@ -77,10 +77,16 @@ export default {
     },
     navToDetail(item) {
       if (item.vacantNum == 0) {
-        this.$message.warning("该类房型暂时没有空余房间，请选择其他房型")
+        this.$message.warning("该类房型暂时没有空余房间，请选择其他房型");
         return;
       }
-      location.href = '/travel/detail?roomId=' + item.roomId
+
+      this.$router.push({
+        path: "/travel/detail",
+        query: {
+          roomId: item.roomId
+        }
+      });
     },
   }
 }
