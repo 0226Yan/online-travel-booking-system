@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.FlightDao"><!--也可以在Dao中写-->
+
+    <sql id="Base_Column_List">
+        flightId,number,dept,destn,deptTime,arrTime,company,flightName,vacantNum,price,type
+    </sql>
+
+    <select id="findBySearch" resultType="com.example.entity.Flight">
+        select * from flight
+        <where>
+            <if test="params != null and params.dept != null and params.dept != ''">
+                and dept like concat('%',#{ params.dept },'%')
+            </if>
+            <if test="params != null and params.destn != null and params.destn != ''">
+                and destn like concat('%',#{ params.destn },'%')
+            </if>
+            <if test="params != null and params.number != null and params.number != ''">
+                and number like concat('%',#{ params.number },'%')
+            </if>
+        </where>
+    </select>
+
+    <update id="updateById" parameterType="com.example.entity.Flight">
+        update flight
+        <set>
+            <if test="number != null">
+                number = #{number},
+            </if>
+            <if test="dept != null">
+                dept = #{dept},
+            </if>
+            <if test="destn != null">
+                destn = #{destn},
+            </if>
+            <if test="deptTime != null">
+                deptTime = #{deptTime},
+            </if>
+            <if test="arrTime != null">
+                arrTime = #{arrTime},
+            </if>
+            <if test="company != null">
+                company = #{company},
+            </if>
+            <if test="flightName != null">
+                flightName = #{flightName},
+            </if>
+            <if test="vacantNum != null">
+                vacantNum = #{vacantNum},
+            </if>
+            <if test="price != price">
+                flightName = #{flightName},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+        </set>
+        where flightId = #{flightId}
+    </update>
+
+</mapper>

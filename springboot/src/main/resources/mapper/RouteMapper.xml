@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.RouteDao">
+
+    <sql id="Base_Column_List">
+        tourId,img,tourName,tourDesc,dept,deptDate,days,price,amount
+    </sql>
+
+    <select id="findBySearch" resultType="com.example.entity.Route">
+        select * from route
+        <where>
+            <if test="params != null and params.tourName != null and params.tourName != ''">
+                and tourName like concat('%',#{ params.tourName },'%')
+            </if>
+            <if test="params != null and params.deptDate != null and params.deptDate != ''">
+                and deptDate like concat('%',#{ params.deptDate },'%')
+            </if>
+        </where>
+    </select>
+
+    <update id="updateById" parameterType="com.example.entity.Route">
+        update route
+        <set>
+            <if test="img != null">
+                img = #{img},
+            </if>
+            <if test="tourName != null">
+                tourName = #{tourName},
+            </if>
+            <if test="tourDesc != null">
+                tourDesc = #{tourDesc},
+            </if>
+            <if test="dept != null">
+                dept = #{dept},
+            </if>
+            <if test="deptDate != null">
+                deptDate = #{deptDate},
+            </if>
+            <if test="days != null">
+                days = #{days},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="amount != null">
+                amount = #{amount},
+            </if>
+        </set>
+        where tourId = #{tourId}
+    </update>
+
+</mapper>

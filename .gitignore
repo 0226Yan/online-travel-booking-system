@@ -1,0 +1,30 @@
+# macOS
+.DS_Store
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# Frontend dependencies and build files
+vue/node_modules/
+vue/dist/
+
+# Backend build files
+springboot/target/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Local backend configuration containing database credentials
+springboot/src/main/resources/application.yml

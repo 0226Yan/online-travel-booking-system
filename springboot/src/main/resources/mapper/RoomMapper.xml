@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.RoomDao"><!--也可以在Dao中写-->
+
+    <sql id="Base_Column_List">
+        roomId,roomImg,roomName,price,vacantNum,hotelId
+    </sql>
+
+    <select id="findBySearch" resultType="com.example.entity.Room">
+       /* select room.*, hotel.hotelName AS hotelName from room
+        left join hotel on room.hotelId = hotel.hotelId
+        order by room.roomId*/
+        select * from room
+        <where>
+            <if test="params != null and params.roomName != null and params.roomName != ''">
+                and roomName like concat('%',#{ params.roomName },'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Room">
+        select room.*, hotel.hotelName as hotelName
+        from room
+        left join hotel on room.hotelId = hotel.hotelId
+        where room.roomId = #{roomId}
+    </select>
+
+    <update id="updateById" parameterType="com.example.entity.Room">
+        update room
+        <set>
+            <if test="roomImg != null">
+                roomImg = #{roomImg},
+            </if>
+            <if test="roomName != null">
+                roomName = #{roomName},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="vacantNum != null">
+                vacantNum = #{vacantNum},
+            </if>
+            <if test="hotelId != null">
+                hotelId = #{hotelId},
+            </if>
+        </set>
+        where roomId = #{roomId}
+    </update>
+
+</mapper>

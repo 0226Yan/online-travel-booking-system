@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.FlightOrderDao"><!--也可以在Dao中写-->
+
+    <sql id="Base_Column_List">
+        id,orderId,status,flightId,userId,time,price
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.FlightOrder">
+        select flight_order.*, flight.number as number, flight.dept as dept, flight.destn as destn, flight.type as type,
+               flight.company as company, user.username as userName, flight.price as price
+        from flight_order
+        left join flight on flight_order.flightId = flight.flightId
+        left join user on flight_order.userId = user.userId
+        <where>
+            <if test="id != null"> and id= #{id}</if>
+            <if test="orderId != null"> and flight_order.orderId like concat('%', #{orderId}, '%')</if>
+            <if test="status != null"> and flight_order.status= #{status}</if>
+            <if test="flightId != null"> and flight_order.flightId= #{flightId}</if>
+            <if test="userId != null"> and flight_order.userId= #{userId}</if>
+            <if test="time != null"> and flight_order.time= #{time}</if>
+            <if test="price != null"> and flight_order.price= #{price}</if>
+        </where>
+        ORDER BY id
+    </select>
+
+    <insert id="insert" parameterType="com.example.entity.FlightOrder" useGeneratedKeys="true">
+        insert into flight_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orderId != null">orderId,</if>
+            <if test="status != null">status,</if>
+            <if test="flightId != null">flightId,</if>
+            <if test="userId != null">userId,</if>
+            <if test="time != null">time,</if>
+            <if test="price != null">price,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orderId != null">#{orderId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="flightId != null">#{flightId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="time != null">#{time},</if>
+            <if test="price != null">#{price},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.FlightOrder">
+        update flight_order
+        <set>
+            <if test="orderId != null">
+                orderId = #{orderId},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="flightId != null">
+                flightId = #{flightId},
+            </if>
+            <if test="userId != null">
+                userId = #{userId},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+
+            <if test="price != null">
+                price = #{price},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from flight_order
+        where  id = #{id}
+    </delete>
+
+</mapper>

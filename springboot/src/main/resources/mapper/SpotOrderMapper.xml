@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.SpotOrderDao"><!--也可以在Dao中写-->
+
+    <sql id="Base_Column_List">
+        id,orderId,status,spotId,userId,time,price
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.SpotOrder">
+        select spot_order.*, spot.spotName as spotName, spot.spotImage as spotImage, user.username as userName, spot.price as price
+        from spot_order
+        left join spot on spot_order.spotId = spot.spotId
+        left join user on spot_order.userId = user.userId
+        <where>
+            <if test="id != null"> and id= #{id}</if>
+            <if test="orderId != null"> and spot_order.orderId like concat('%', #{orderId}, '%')</if>
+            <if test="status != null"> and spot_order.status= #{status}</if>
+            <if test="spotId != null"> and spot_order.spotId= #{spotId}</if>
+            <if test="userId != null"> and spot_order.userId= #{userId}</if>
+            <if test="time != null"> and spot_order.time= #{time}</if>
+            <if test="price != null"> and spot_order.price= #{price}</if>
+        </where>
+        ORDER BY id
+    </select>
+
+    <insert id="insert" parameterType="com.example.entity.SpotOrder" useGeneratedKeys="true">
+        insert into spot_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orderId != null">orderId,</if>
+            <if test="status != null">status,</if>
+            <if test="spotId != null">spotId,</if>
+            <if test="userId != null">userId,</if>
+            <if test="time != null">time,</if>
+            <if test="price != null">price,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orderId != null">#{orderId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="spotId != null">#{spotId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="time != null">#{time},</if>
+            <if test="price != null">#{price},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.SpotOrder">
+        update spot_order
+        <set>
+            <if test="orderId != null">
+                orderId = #{orderId},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="spotId != null">
+                spotId = #{spotId},
+            </if>
+            <if test="userId != null">
+                userId = #{userId},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+
+            <if test="price != null">
+                price = #{price},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from spot_order
+        where  id = #{id}
+    </delete>
+
+</mapper>

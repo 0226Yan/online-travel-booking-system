@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.AdminDao"><!--也可以在Dao中写-->
+
+    <select id="findBySearch" resultType="com.example.entity.Admin">
+        select * from admin
+        <where>
+            <if test="params != null and params.username != null and params.username != ''">
+                and username like concat('%',#{ params.username },'%')
+            </if>
+        </where>
+    </select>
+
+</mapper>

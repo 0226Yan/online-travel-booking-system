@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.SpotDao">
+
+    <sql id="Base_Column_List">
+        spotId,spotName,spotAddress,spotImage,description,openingHours,price,amount,offPrice
+    </sql>
+
+    <select id="findBySearch" resultType="com.example.entity.Spot">
+        select * from spot
+        <where>
+            <if test="params != null and params.spotName != null and params.spotName != ''">
+                and spotName like concat('%',#{ params.spotName },'%')
+            </if>
+            <if test="params != null and params.spotAddress != null and params.spotAddress != ''">
+                and spotAddress like concat('%',#{ params.spotAddress },'%')
+            </if>
+        </where>
+    </select>
+
+    <update id="updateById" parameterType="com.example.entity.Spot">
+        update spot
+        <set>
+            <if test="spotName != null">
+                spotName = #{spotName},
+            </if>
+            <if test="spotAddress != null">
+                spotAddress = #{spotAddress},
+            </if>
+            <if test="spotImage != null">
+                spotImage = #{spotImage},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="openingHours != null">
+                openingHours = #{openingHours},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="amount != null">
+                amount = #{amount},
+            </if>
+            <if test="offPrice != null">
+                offPrice = #{offPrice},
+            </if>
+        </set>
+        where spotId = #{spotId}
+    </update>
+
+</mapper>

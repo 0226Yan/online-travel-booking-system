@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.HotelDao">
+    <!--也可以在Dao中写-->
+
+    <select id="findBySearch" resultType="com.example.entity.Hotel">
+        select * from hotel
+        <where>
+            <if test="params != null and params.hotelName != null and params.hotelName != ''">
+                and hotelName like concat('%',#{ params.hotelName },'%')
+            </if>
+            <if test="params != null and params.hotelAddress != null and params.hotelAddress != ''">
+                and hotelAddress like concat('%',#{ params.hotelAddress },'%')
+            </if>
+        </where>
+    </select>
+
+   <!--<sql id="Base_Column_List">
+        hotelId,hotelName,hotelImg,hotelAddress,description,tel,email,price
+    </sql>
+    <select id="selectAll" resultType="com.example.entity.Hotel">
+        select
+        <include refid="Base_Column_List"></include>
+        from hotel
+        <where>
+            <if test="hotelId != null"> and hotelId = #{hotelId}</if>
+            <if test="hotelName != null"> and hotelName like concat('%',#{ params.hotelName },'%')</if>
+            <if test="hotelImg != null"> and hotelImg = #{hotelImg}</if>
+            <if test="hotelAddress != null"> and hotelAddress = #{hotelAddress}</if>
+            <if test="description != null"> and description = #{description}</if>
+            <if test="tel != null"> and tel = #{tel}</if>
+            <if test="email != null"> and email = #{email}</if>
+            <if test="price != null"> and price = #{price}</if>
+        </where>
+    </select>-->
+</mapper>

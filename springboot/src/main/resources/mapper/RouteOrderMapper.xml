@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.RouteOrderDao"><!--也可以在Dao中写-->
+
+    <sql id="Base_Column_List">
+        id,orderId,status,tourId,userId,time,price
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.RouteOrder">
+        select route_order.*, route.tourName as tourName, route.img as img, user.username as userName, route.price as price
+        from route_order
+        left join route on route_order.tourId = route.tourId
+        left join user on route_order.userId = user.userId
+        <where>
+            <if test="id != null"> and id= #{id}</if>
+            <if test="orderId != null"> and route_order.orderId like concat('%', #{orderId}, '%')</if>
+            <if test="status != null"> and route_order.status= #{status}</if>
+            <if test="tourId != null"> and route_order.tourId= #{tourId}</if>
+            <if test="userId != null"> and route_order.userId= #{userId}</if>
+            <if test="time != null"> and route_order.time= #{time}</if>
+            <if test="price != null"> and route_order.price= #{price}</if>
+        </where>
+        ORDER BY id
+    </select>
+
+    <insert id="insert" parameterType="com.example.entity.RouteOrder" useGeneratedKeys="true">
+        insert into route_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orderId != null">orderId,</if>
+            <if test="status != null">status,</if>
+            <if test="tourId != null">tourId,</if>
+            <if test="userId != null">userId,</if>
+            <if test="time != null">time,</if>
+            <if test="price != null">price,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orderId != null">#{orderId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="tourId != null">#{tourId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="time != null">#{time},</if>
+            <if test="price != null">#{price},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.RouteOrder">
+        update route_order
+        <set>
+            <if test="orderId != null">
+                orderId = #{orderId},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="tourId != null">
+                tourId = #{tourId},
+            </if>
+            <if test="userId != null">
+                userId = #{userId},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+
+            <if test="price != null">
+                price = #{price},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from route_order
+        where  id = #{id}
+    </delete>
+
+</mapper>
