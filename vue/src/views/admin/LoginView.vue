@@ -1,15 +1,15 @@
 <template>
   <div style="position: relative;">
-    <img src="/login_background.jpg" style="position: absolute; top: 0; left: 0;
+    <img :src="publicPath + 'login_background.jpg'" style="position: absolute; top: 0; left: 0;
     width: 100%; height: 100%; filter: blur(5px); opacity: 0.97;" alt="Background Image">
     <div style="padding: 300px;display: flex; justify-content: center;
       align-items: center; height: 100vh; overflow: hidden;">
       <el-container style="position: relative; width: 400px;">
 
         <el-main style="background-color: #fff; flex: 1; height: 500px;
-      border-top-left-radius: 10px; border-bottom-left-radius: 10px">
+        border-top-left-radius: 10px; border-bottom-left-radius: 10px">
           <div style="width: 100%; height: 100px; font-size: 30px; line-height: 100px;
-        text-align: center; color: #454545">登 录</div>
+          text-align: center; color: #454545">登 录</div>
           <div style="margin-top: 25px; text-align: center; height: 320px;">
             <el-form :model="admin">
               <el-form-item>
@@ -24,7 +24,7 @@
                 <el-radio name="role"  label="管理员" v-model="admin.role" class="role-radio">管理员</el-radio>
                 <el-radio name="role" label="用户"  v-model="admin.role" class="role-radio">会员</el-radio>
               </div>
-              <el-link type="info" href="/register" target="_blank" class="register-link">注册账号</el-link>
+              <el-link type="info" class="register-link" @click="goToRegister">注册账号</el-link>
               <el-form-item>
                 <el-button round class="login_button" style="width: 80%; margin-top: 10px" @click="login()">
                   登 录
@@ -35,11 +35,11 @@
         </el-main>
 
         <el-aside style="flex: 1.3; height: 500px; display: flex; flex-direction: column;
-      justify-content: center; align-items: center; position: relative;
-      border-top-right-radius: 10px; border-bottom-right-radius: 10px;">
-          <img src="/login.jpg" style="width: 100%; height: 100%; object-fit: cover;" alt="Login Image">
+        justify-content: center; align-items: center; position: relative;
+        border-top-right-radius: 10px; border-bottom-right-radius: 10px;">
+          <img :src="publicPath + 'login.jpg'" style="width: 100%; height: 100%; object-fit: cover;" alt="Login Image">
           <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-        text-align: center; color: #fff; font-size: 45px; opacity: 0.8; letter-spacing: 5px;">
+          text-align: center; color: #fff; font-size: 45px; opacity: 0.8; letter-spacing: 5px;">
             WELCOME BACK
           </div>
         </el-aside>
@@ -56,12 +56,19 @@ export default {
   name: "LoginView",
   data() {
     return {
-      admin: {role:'管理员'}
+      publicPath: process.env.BASE_URL,
+      admin: {
+        role: '管理员'
+      }
     };
   },
   created() {
   },
   methods: {
+    goToRegister() {
+      this.$router.push("/register");
+    },
+
     login() {
       request.post("/adminInfo/login",this.admin).then(res => {
         if (res.code === '0'){
