@@ -129,7 +129,7 @@ project_travel/
 │   │   └── service/                  # Business logic layer
 │   ├── src/main/resources/
 │   │   ├── mapper/                   # MyBatis XML mapper files
-│   │   └── application.yml           # Backend configuration
+│   │   └── application-example.yml   # Backend configuration
 │   ├── file/                         # Uploaded image resources
 │   └── pom.xml                       # Maven configuration
 │
@@ -184,11 +184,14 @@ Import the database file:
 mysql -u root -p travel_management_db < database/travel_management_db.sql
 ```
 
-Update the backend database configuration file:
+Copy the example configuration file:
 
-```text
-springboot/src/main/resources/application.yml
+```bash
+cp springboot/src/main/resources/application-example.yml \
+   springboot/src/main/resources/application.yml
 ```
+
+Then update the MySQL username and password in `application.yml`.
 
 Example configuration:
 
