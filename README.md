@@ -7,6 +7,10 @@
 ![MyBatis](https://img.shields.io/badge/MyBatis-Persistence-red)
 ![JWT](https://img.shields.io/badge/JWT-Authentication-purple)
 
+[Live Demo](https://911413485-spec.github.io/online-travel-booking-system/)
+
+> The live demo hosts the Vue frontend only. Backend-dependent features require Spring Boot and MySQL to be run locally.
+
 ![Project Preview](./screenshots/preview.png)
 
 ## Overview
@@ -31,6 +35,7 @@ This project was originally developed as an undergraduate capstone project.
 | Database & Persistence | MySQL, MyBatis |
 | Authentication | JWT |
 | Build Tools | Maven, Vue CLI |
+| Deployment | GitHub Pages, GitHub Actions |
 
 ---
 
@@ -96,6 +101,7 @@ This project was originally developed as an undergraduate capstone project.
 #### Order Management
 
 ![Order Management](./screenshots/admin-order-management.png)
+
 ---
 
 ## Project Structure
@@ -104,6 +110,10 @@ This project was originally developed as an undergraduate capstone project.
 project_travel/
 ├── README.md                         # Project documentation
 ├── .gitignore                        # Git ignored files
+│
+├── .github/
+│   └── workflows/
+│       └── deploy-pages.yml          # GitHub Pages deployment workflow
 │
 ├── database/
 │   └── travel_management_db.sql      # Database schema and sample data
@@ -146,7 +156,9 @@ project_travel/
 
 ---
 
-## Demo Accounts
+## Local Demo Accounts
+
+> These accounts are available when the Spring Boot backend and MySQL database are running locally.
 
 ### Admin Account
 
@@ -167,6 +179,14 @@ Role: User
 ---
 
 ## Local Setup
+
+### Prerequisites
+
+- JDK 8
+- Maven
+- MySQL
+- Node.js and npm
+- IntelliJ IDEA or another Java IDE
 
 ### 1. Database Setup
 
