@@ -7,7 +7,7 @@
 ![MyBatis](https://img.shields.io/badge/MyBatis-Persistence-red)
 ![JWT](https://img.shields.io/badge/JWT-Authentication-purple)
 
-[[Live Demo](https://911413485-spec.github.io/online-travel-booking-system/)
+[Live Demo](https://911413485-spec.github.io/online-travel-booking-system/)
 
 ### Demo Login
 
