@@ -70,6 +70,36 @@ export default {
     },
 
     login() {
+      if (process.env.VUE_APP_DEMO_MODE === "true") {
+        const demoUser =
+            this.admin.role === "用户"
+                ? {
+                  userId: 1,
+                  username: "demo_user",
+                  role: "用户"
+                }
+                : {
+                  adminId: 1,
+                  username: "admin",
+                  role: "管理员"
+                };
+
+        localStorage.setItem("user", JSON.stringify(demoUser));
+
+        this.$message({
+          message: "已进入静态演示模式",
+          type: "success"
+        });
+
+        if (this.admin.role === "用户") {
+          this.$router.push("/travel");
+        } else {
+          this.$router.push("/");
+        }
+
+        return;
+      }
+
       request.post("/adminInfo/login",this.admin).then(res => {
         if (res.code === '0'){
           this.$message({

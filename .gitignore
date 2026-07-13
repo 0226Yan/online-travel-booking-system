@@ -28,3 +28,5 @@ yarn-error.log*
 
 # Local backend configuration containing database credentials
 springboot/src/main/resources/application.yml
+
+!vue/.env.production

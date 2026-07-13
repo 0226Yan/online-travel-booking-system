@@ -7,15 +7,31 @@
 ![MyBatis](https://img.shields.io/badge/MyBatis-Persistence-red)
 ![JWT](https://img.shields.io/badge/JWT-Authentication-purple)
 
-[Live Demo](https://911413485-spec.github.io/online-travel-booking-system/)
+[[Live Demo](https://911413485-spec.github.io/online-travel-booking-system/)
 
-> The live demo hosts the Vue frontend only. Backend-dependent features require Spring Boot and MySQL to be run locally.
+### Demo Login
+
+| Role | Username | Password |
+| --- | --- | --- |
+| User | `demo_user` | `123` |
+| Administrator | `admin` | `123` |
+
+> Select the corresponding role on the login page.
+>
+> The GitHub Pages demo uses static mock data and local image assets, so it can be explored without starting the Spring Boot backend or MySQL database.
+>
+> Authentication is simulated in the browser. Data changes made in the online demo are temporary and will be reset after the page is refreshed.
 
 ![Project Preview](./screenshots/preview.png)
 
 ## Overview
 
 This project is a full-stack online travel booking management system built with **Vue 2**, **Spring Boot**, and **MySQL**.
+
+The project supports two running modes:
+
+- **Full-stack local mode**: Vue connects to the Spring Boot REST API and MySQL database.
+- **Static demo mode**: GitHub Pages uses mock data and static images stored in the Vue project.
 
 The system includes two main parts:
 
@@ -144,36 +160,19 @@ project_travel/
 │   └── pom.xml                       # Maven configuration
 │
 └── vue/                              # Frontend project
-    ├── public/                       # Static assets
+    ├── public/
+    │   ├── demo/                     # Static images used by GitHub Pages demo
+    │   └── ...                       # Login images and other static assets
     ├── src/
+    │   ├── mock/
+    │   │   └── demoApi.js            # Static demo API and mock data
     │   ├── router/                   # Vue Router configuration
     │   ├── utils/                    # Axios request configuration
     │   ├── views/admin/              # Admin dashboard pages
     │   └── views/front/              # User portal pages
+    ├── .env.production               # Enables static demo mode in production
     ├── package.json
     └── vue.config.js
-```
-
----
-
-## Local Demo Accounts
-
-> These accounts are available when the Spring Boot backend and MySQL database are running locally.
-
-### Admin Account
-
-```text
-Username: admin
-Password: 123
-Role: Administrator
-```
-
-### User Account
-
-```text
-Username: demo_user
-Password: 123
-Role: User
 ```
 
 ---
@@ -272,6 +271,45 @@ vue/src/utils/request.js
 
 ---
 
+## Static Demo Mode
+
+The GitHub Pages deployment runs as a frontend-only demonstration and does not require Spring Boot or MySQL.
+
+Static demo mode is enabled in:
+
+```text
+vue/.env.production
+```
+
+with the following environment variable:
+
+```env
+VUE_APP_DEMO_MODE=true
+```
+
+Mock API responses and temporary demo data are defined in:
+
+```text
+vue/src/mock/demoApi.js
+```
+
+Static images used by the online demo are stored in:
+
+```text
+vue/public/demo
+```
+
+To test the static demo locally without starting the backend or database:
+
+```bash
+cd vue
+VUE_APP_DEMO_MODE=true npm run serve
+```
+
+Operations such as creating, paying, finishing, or deleting orders are simulated in memory. Changes are reset when the page is refreshed.
+
+---
+
 ## Image Resources
 
 Login page images and other frontend static assets are stored in:
@@ -280,11 +318,19 @@ Login page images and other frontend static assets are stored in:
 vue/public
 ```
 
-Uploaded images such as user avatars, hotels, rooms, scenic spots, and travel routes are stored in:
+Static images used by the GitHub Pages demo are stored in:
+
+```text
+vue/public/demo
+```
+
+Images uploaded through the local full-stack application, including user avatars, hotels, rooms, scenic spots, and travel routes, are stored in:
 
 ```text
 springboot/file
 ```
+
+In local full-stack mode, uploaded images are served through the Spring Boot file API. In static demo mode, images are loaded directly from the Vue public directory.
 
 ---
 

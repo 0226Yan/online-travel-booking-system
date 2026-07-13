@@ -1,6 +1,6 @@
 //封装request请求
 import axios from 'axios'
-
+import { demoRequest } from "@/mock/demoApi";
 
 // 创建一个axios对象
 const request = axios.create({
@@ -43,4 +43,38 @@ request.interceptors.response.use(
 )
 
 
-export default request
+const api = {
+    get(url, config = {}) {
+        if (process.env.VUE_APP_DEMO_MODE === "true") {
+            return demoRequest("get", url, null, config);
+        }
+
+        return request.get(url, config);
+    },
+
+    post(url, data = {}, config = {}) {
+        if (process.env.VUE_APP_DEMO_MODE === "true") {
+            return demoRequest("post", url, data, config);
+        }
+
+        return request.post(url, data, config);
+    },
+
+    put(url, data = {}, config = {}) {
+        if (process.env.VUE_APP_DEMO_MODE === "true") {
+            return demoRequest("put", url, data, config);
+        }
+
+        return request.put(url, data, config);
+    },
+
+    delete(url, config = {}) {
+        if (process.env.VUE_APP_DEMO_MODE === "true") {
+            return demoRequest("delete", url, null, config);
+        }
+
+        return request.delete(url, config);
+    }
+};
+
+export default api;
