@@ -111,7 +111,12 @@ export default {
       this.currentPage = 1;
     },
     navToHotel(hotelId) {
-      location.href = '/travel/hotel?hotelId=' + hotelId
+      this.$router.push({
+        path: "/travel/hotel",
+        query: {
+          hotelId: hotelId
+        }
+      });
     },
     handleCurrentChange(page) {
       this.currentPage = page;

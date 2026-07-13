@@ -124,7 +124,12 @@ export default {
         this.$message.warning("该景区暂时没有可售门票");
         return;
       }
-      location.href = '/travel/spot?spotId=' + spotId;
+      this.$router.push({
+        path: "/travel/spot",
+        query: {
+          spotId: spotId
+        }
+      });
     },
     handleCurrentChange(page) {
       this.currentPage = page;

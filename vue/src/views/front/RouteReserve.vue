@@ -109,7 +109,12 @@ export default {
       this.currentPage = 1;
     },
     navToRoute(tourId) {
-      location.href = '/travel/route?tourId=' + tourId
+      this.$router.push({
+        path: "/travel/route",
+        query: {
+          tourId: tourId
+        }
+      });
     },
     handleCurrentChange(page) {
       this.currentPage = page;
