@@ -221,16 +221,59 @@ const router = new VueRouter({
 })
 
 // 路由守卫
-router.beforeEach((to ,from, next) => {
-  if (to.path ==='/login' || to.path === '/register' || to.path === '/travel') {
+router.beforeEach((to, from, next) => {
+  // 登录和注册页面无需登录
+  if (to.path === "/login" || to.path === "/register") {
     next();
-    return
+    return;
   }
-  const user = localStorage.getItem("user");
-  if (!user && to.path !== '/login') {
-    return next("/login");
+
+  let currentUser = null;
+
+  try {
+    currentUser = JSON.parse(
+        localStorage.getItem("user")
+    );
+  } catch (error) {
+    localStorage.removeItem("user");
   }
+
+  // 没有登录信息时，统一返回登录页
+  if (!currentUser) {
+    next("/login");
+    return;
+  }
+
+  const role = currentUser.role;
+
+  const isUser =
+      role === "用户" ||
+      role === "user";
+
+  const isAdmin =
+      role === "管理员" ||
+      role === "admin";
+
+  //普通用户不能进入管理员后台。
+  if (isUser && !to.path.startsWith("/travel")) {
+    next("/travel");
+    return;
+  }
+
+  //管理员不能进入普通用户页面。
+  if (isAdmin && to.path.startsWith("/travel")) {
+    next("/");
+    return;
+  }
+
+  // 角色异常时重新登录，避免进入错误页面。
+  if (!isUser && !isAdmin) {
+    localStorage.removeItem("user");
+    next("/login");
+    return;
+  }
+
   next();
-})
+});
 
 export default router

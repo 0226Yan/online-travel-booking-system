@@ -3,20 +3,6 @@ const image = flag =>
 
 const demoImage = image("1712247927179");
 
-/*
- * 只在静态 Demo 模式生效。
- *
- * 你原来的订单页面会在图片前面拼接：
- * http://localhost:8080/api/files/
- *
- * 因此页面可能生成错误地址：
- * http://localhost:8080/api/files//demo/xxxx.jpg
- *
- * 这里会自动把它修正成：
- * /demo/xxxx.jpg
- *
- * 所以不用修改 HotelOrder.vue、SpotOrder.vue 和 RouteOrder.vue。
- */
 function rewriteDemoImageUrl(value) {
     const url = String(value || "");
     const basePath = process.env.BASE_URL || "/";
@@ -45,59 +31,103 @@ function installDemoImageRewrite() {
 
     window.__travelDemoImageRewriteInstalled = true;
 
-    const rewriteImage = element => {
-        if (!element || element.tagName !== "IMG") {
-            return;
-        }
+    const ImageElement = window.HTMLImageElement;
+    const ElementClass = window.Element;
 
-        const currentSrc = element.getAttribute("src") || "";
-        const rewrittenSrc = rewriteDemoImageUrl(currentSrc);
+    /*
+     * 拦截 img.src。
+     * Vue 或 Element UI 设置图片地址时，会在浏览器发出请求之前被修正。
+     */
+    if (ImageElement) {
+        const imagePrototype = ImageElement.prototype;
 
-        if (rewrittenSrc && rewrittenSrc !== currentSrc) {
-            element.setAttribute("src", rewrittenSrc);
-        }
-    };
+        const srcDescriptor = Object.getOwnPropertyDescriptor(
+            imagePrototype,
+            "src"
+        );
 
-    const rewriteTree = node => {
-        if (!node || node.nodeType !== 1) {
-            return;
-        }
+        if (
+            srcDescriptor &&
+            typeof srcDescriptor.get === "function" &&
+            typeof srcDescriptor.set === "function"
+        ) {
+            Object.defineProperty(imagePrototype, "src", {
+                configurable: srcDescriptor.configurable,
+                enumerable: srcDescriptor.enumerable,
 
-        rewriteImage(node);
+                get() {
+                    return srcDescriptor.get.call(this);
+                },
 
-        if (typeof node.querySelectorAll === "function") {
-            node.querySelectorAll("img").forEach(rewriteImage);
-        }
-    };
-
-    const startObserver = () => {
-        rewriteTree(document.documentElement);
-
-        const observer = new MutationObserver(mutations => {
-            mutations.forEach(mutation => {
-                if (mutation.type === "attributes") {
-                    rewriteImage(mutation.target);
-                    return;
+                set(value) {
+                    srcDescriptor.set.call(
+                        this,
+                        rewriteDemoImageUrl(value)
+                    );
                 }
-
-                mutation.addedNodes.forEach(rewriteTree);
             });
-        });
+        }
+    }
 
-        observer.observe(document.documentElement, {
-            childList: true,
-            subtree: true,
-            attributes: true,
-            attributeFilter: ["src"]
+    /*
+     * 有些组件使用 setAttribute("src", value)，
+     * 因此这里也同时拦截。
+     */
+    if (ElementClass) {
+        const originalSetAttribute =
+            ElementClass.prototype.setAttribute;
+
+        ElementClass.prototype.setAttribute = function (
+            name,
+            value
+        ) {
+            const attributeName = String(name).toLowerCase();
+
+            if (
+                ImageElement &&
+                this instanceof ImageElement &&
+                (attributeName === "src" ||
+                    attributeName === "srcset")
+            ) {
+                value = rewriteDemoImageUrl(value);
+            }
+
+            return originalSetAttribute.call(
+                this,
+                name,
+                value
+            );
+        };
+    }
+
+    /*
+     * 修正页面中已经存在的图片。
+     */
+    const rewriteExistingImages = () => {
+        document.querySelectorAll("img").forEach(element => {
+            const currentSrc =
+                element.getAttribute("src") || "";
+
+            const rewrittenSrc =
+                rewriteDemoImageUrl(currentSrc);
+
+            if (
+                rewrittenSrc &&
+                rewrittenSrc !== currentSrc
+            ) {
+                element.src = rewrittenSrc;
+            }
         });
     };
 
     if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", startObserver, {
-            once: true
-        });
+        document.addEventListener(
+            "DOMContentLoaded",
+            rewriteExistingImages,
+            { once: true }
+        );
     } else {
-        startObserver();
+        rewriteExistingImages();
     }
 }
 
@@ -481,7 +511,7 @@ const users = [
         password: "123",
         phone: "13900000000",
         email: "demo@example.com",
-        role: "user"
+        role: "用户"
     },
     {
         userId: 2,
@@ -492,7 +522,7 @@ const users = [
         password: "123",
         phone: "",
         email: "",
-        role: "user"
+        role: "用户"
     }
 ];
 
@@ -510,15 +540,6 @@ const admins = [
     }
 ];
 
-/*
- * Demo 中每一种订单固定使用一张图片：
- *
- * 酒店订单：家庭房图片
- * 景点订单：九寨沟图片
- * 线路订单：玉龙雪山图片
- *
- * 航班表没有图片字段，所以航班订单不显示图片。
- */
 let hotelOrders = [
     {
         id: 2,

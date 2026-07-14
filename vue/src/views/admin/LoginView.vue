@@ -71,31 +71,68 @@ export default {
 
     login() {
       if (process.env.VUE_APP_DEMO_MODE === "true") {
-        const demoUser =
-            this.admin.role === "用户"
-                ? {
-                  userId: 1,
-                  username: "demo_user",
-                  role: "用户"
-                }
-                : {
-                  adminId: 1,
-                  username: "admin",
-                  role: "管理员"
-                };
+        const username = String(this.admin.username || "").trim();
+        const password = String(this.admin.password || "");
 
-        localStorage.setItem("user", JSON.stringify(demoUser));
+        // 每次登录前先清除上一次登录信息
+        localStorage.removeItem("user");
+
+        // 普通用户账号
+        if (username === "demo_user" && password === "123") {
+          const demoUser = {
+            userId: 1,
+            userImg: `${process.env.BASE_URL}demo/1711886704203.jpg`,
+            account: "USER_DEMO001",
+            username: "demo_user",
+            gender: "女",
+            password: "123",
+            phone: "13900000000",
+            email: "demo@example.com",
+            role: "用户"
+          };
+
+          localStorage.setItem("user", JSON.stringify(demoUser));
+
+          this.$message({
+            message: "用户登录成功",
+            type: "success"
+          });
+
+          // 用户必须进入用户端
+          this.$router.replace("/travel");
+          return;
+        }
+
+        // 管理员账号
+        if (username === "admin" && password === "123") {
+          const demoAdmin = {
+            adminId: 1,
+            username: "admin",
+            password: "123",
+            realName: "Demo Administrator",
+            gender: "男",
+            phone: "13800000000",
+            email: "admin@example.com",
+            img: `${process.env.BASE_URL}demo/1712086489328.jpg`,
+            role: "管理员"
+          };
+
+          localStorage.setItem("user", JSON.stringify(demoAdmin));
+
+          this.$message({
+            message: "管理员登录成功",
+            type: "success"
+          });
+
+          // 管理员进入后台
+          this.$router.replace("/");
+          return;
+        }
 
         this.$message({
-          message: "已进入静态演示模式",
-          type: "success"
+          message: "用户名或密码错误",
+          type: "error"
         });
-
-        if (this.admin.role === "用户") {
-          this.$router.push("/travel");
-        } else {
-          this.$router.push("/");
-        }
 
         return;
       }

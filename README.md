@@ -45,17 +45,19 @@ This project was originally developed as an undergraduate capstone project.
 ## Tech Stack
 
 | Layer | Technologies |
-| --- | --- |
+| --- |  |
 | Frontend | Vue 2, Vue Router, Element UI, Axios |
 | Backend | Spring Boot, Spring MVC, Java |
 | Database & Persistence | MySQL, MyBatis |
-| Authentication | JWT |
+| Authentication | JWT (full-stack) / Mock login (demo) |
 | Build Tools | Maven, Vue CLI |
 | Deployment | GitHub Pages, GitHub Actions |
 
 ---
 
 ## Features
+
+The features below describe the full-stack local application. The static GitHub Pages demo simulates selected workflows and does not permanently store uploaded files, account changes, or order changes.
 
 ### User Portal
 
