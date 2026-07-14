@@ -338,9 +338,8 @@ In local full-stack mode, uploaded images are served through the Spring Boot fil
 
 ---
 
-## Development Notes
+## Project Highlights
 
-- Developed and refined major pages for both the user portal and admin dashboard.
-- Integrated frontend components with backend REST APIs.
-- Configured the MySQL database and imported sample data.
-- Tested the complete local workflow, including frontend, backend, database, and image resources.
+- Built user and admin modules for hotel, scenic spot, travel route, flight, and order management.
+- Integrated the Vue frontend with Spring Boot REST APIs and MyBatis-based MySQL persistence.
+- Added a frontend-only GitHub Pages demo using mock APIs and static image assets while preserving the full-stack local mode.
