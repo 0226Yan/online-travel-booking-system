@@ -45,13 +45,15 @@ This project was originally developed as an undergraduate capstone project.
 ## Tech Stack
 
 | Layer | Technologies |
-| --- |  |
+| --- | --- |
 | Frontend | Vue 2, Vue Router, Element UI, Axios |
 | Backend | Spring Boot, Spring MVC, Java |
 | Database & Persistence | MySQL, MyBatis |
 | Authentication | JWT (full-stack) / Mock login (demo) |
 | Build Tools | Maven, Vue CLI |
 | Deployment | GitHub Pages, GitHub Actions |
+
+---
 
 ---
 
