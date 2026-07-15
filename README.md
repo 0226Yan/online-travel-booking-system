@@ -7,7 +7,7 @@
 ![MyBatis](https://img.shields.io/badge/MyBatis-Persistence-red)
 ![JWT](https://img.shields.io/badge/JWT-Authentication-purple)
 
-[Live Demo](https://911413485-spec.github.io/online-travel-booking-system/)
+[Live Demo](https://0226yan.github.io/online-travel-booking-system/)
 
 ### Demo Login
 
@@ -52,8 +52,6 @@ This project was originally developed as an undergraduate capstone project.
 | Authentication | JWT (full-stack) / Mock login (demo) |
 | Build Tools | Maven, Vue CLI |
 | Deployment | GitHub Pages, GitHub Actions |
-
----
 
 ---
 
