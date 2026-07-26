@@ -335,9 +335,3 @@ springboot/file
 In local full-stack mode, uploaded images are served through the Spring Boot file API. In static demo mode, images are loaded directly from the Vue public directory.
 
 ---
-
-## Project Highlights
-
-- Built user and admin modules for hotel, scenic spot, travel route, flight, and order management.
-- Integrated the Vue frontend with Spring Boot REST APIs and MyBatis-based MySQL persistence.
-- Added a frontend-only GitHub Pages demo using mock APIs and static image assets while preserving the full-stack local mode.
